@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ChapterDao">
+    <select id="selectChapterByAid" parameterType="Map" resultType="Chapter">
+        select chapter_id id, album_id aid, title, size, downPath, upload_time uploadTime from c_chapter
+        where album_id = #{aid} limit #{begin},#{pageSize}
+    </select>
+    <select id="selectChapterCount" resultType="int">
+        select count(*) from c_chapter where album_id = #{aid}
+    </select>
+    <insert id="insertChapter">
+        insert into c_chapter values(#{id}, #{aid}, #{title}, #{size}, #{downPath}, #{uploadTime})
+    </insert>
+    <delete id="deleteChapter">
+        delete from c_chapter where chapter_id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateByField" parameterType="Map">
+        update c_chapter set downPath = #{downPath}, size = #{size} where chapter_id = #{id}
+    </update>
+</mapper>

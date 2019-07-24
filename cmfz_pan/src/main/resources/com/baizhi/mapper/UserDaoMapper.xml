@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.UserDao">
+    <select id="selectAllUser" resultType="User">
+        select user_id id, phone, password, salt, dharmaName dharmaName, province, city, gender, personal_sign personalSign, profile, status, regist_time registTime
+        from c_user limit #{begin}, #{pageSize}
+    </select>
+    <select id="selectAllCount" resultType="int">
+        select count(*) from c_user
+    </select>
+    <update id="updateUser">
+        update c_user set
+        phone=#{phone}, password=#{password}, salt=#{salt}, dharmaName =#{dharmaName}, province=#{province}, city=#{city}, gender=#{gender}, personal_sign =#{personalSign}, status=#{status}, regist_time=#{registTime}
+        where user_id = #{id}
+    </update>
+    <insert id="insertUser">
+        insert into c_user values(#{id}, #{phone}, #{password}, #{salt}, #{dharmaName}, #{province}, #{city}, #{gender}, #{personalSign}, #{profile}, #{status}, #{registTime})
+    </insert>
+    <delete id="deleteUser">
+        delete from c_user where user_id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateWithProfile" parameterType="Map">
+        update c_user set profile = #{value} where user_id = #{id}
+    </update>
+    <update id="updateWithStatus" parameterType="Map">
+        update c_user set status = #{value} where user_id = #{id}
+    </update>
+</mapper>
